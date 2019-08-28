@@ -1,9 +1,9 @@
 {
     "port": 8100,
-    "passphrase": "key",
-    "guild": "guild.id",
+    "passphrase": "dt8226",
+    "guild": "612387816009105418",
     "bots": [{
-        "channel": "channel.name",
-        "token": "bot.token"
+        "channel": "oyunicichat",
+        "token": "MzM5NDk3ODIxODk4MTQ1Nzk0.XWX3Ig.eBNMFOTEwaok2JOwRQ1QFalLKA8"
     }]
 }

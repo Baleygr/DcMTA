@@ -1,0 +1,9 @@
+{
+    "port": 8100,
+    "passphrase": "key",
+    "guild": "guild.id",
+    "bots": [{
+        "channel": "channel.name",
+        "token": "bot.token"
+    }]
+}

@@ -1,6 +1,6 @@
 <discord>
-    <channel>name-of-your-channel</channel>
-    <passphrase>equal-to-the-server-passphrase</passphrase>
-    <hostname>localhost</hostname>
+    <channel>oyunicichat</channel>
+    <passphrase>dt8226</passphrase>
+    <hostname>BGTS</hostname>
     <port>8100</port>
 </discord>

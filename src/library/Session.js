@@ -45,7 +45,7 @@ class Session extends EventEmitter {
 
     _error(error) {
         // console.log(`Session ${this.id} error: ${error.toString()}\n${error.stack}`);
-        console.log(`Session error: ${error.toString()}\n${error.stack}`);
+        console.log(`Parametre Hatası: ${error.toString()}\n${error.stack}`);
     }
 
     _end() {

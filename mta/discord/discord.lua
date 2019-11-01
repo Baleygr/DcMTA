@@ -5,10 +5,10 @@ local socket = false
 
 function createSocketFromConfig()
      local config = xmlLoadFile("config.xml")
-     local channel = xmlNodeGetValue(xmlFindChild(config, "channel", 0))
-     local passphrase = xmlNodeGetValue(xmlFindChild(config, "passphrase", 0))
-     local hostname = xmlNodeGetValue(xmlFindChild(config, "hostname", 0))
-     local port = tonumber(xmlNodeGetValue(xmlFindChild(config, "port", 0)))
+     local channel = xmlNodeGetValue(xmlFindChild(config, "channel", 1))
+     local passphrase = xmlNodeGetValue(xmlFindChild(config, "passphrase", 1))
+     local hostname = xmlNodeGetValue(xmlFindChild(config, "hostname", 1))
+     local port = tonumber(xmlNodeGetValue(xmlFindChild(config, "port", 1)))
      xmlUnloadFile(config)
 
      createDiscordPipe(hostname, port, passphrase, channel)
@@ -32,7 +32,7 @@ function createDiscordPipe(hostname, port, passphrase, channel)
 
     socket:on("ready",
         function (socket)
-            outputDebugString("[Discord] Connected to ".. hostname .." on port ".. port)
+            outputDebugString("[Discord] ".. hostname .." Adlı Servere Bağlantı Başarılı port: ".. port)
             sendAuthPacket(socket)
         end
     )
@@ -41,11 +41,11 @@ function createDiscordPipe(hostname, port, passphrase, channel)
 
     socket:on("close",
         function (socket)
-            outputDebugString("[Discord] Disconnected from ".. hostname)
+            outputDebugString("[Discord] ".. hostname"'tan Çıkış yapıldı)
 
             setTimer(
                 function ()
-                    outputDebugString("[Discord] Reconnecting now..")
+                    outputDebugString("[Discord] Tekrardan Deneniyor...")
                     socket:connect()
                 end,
             15000, 1)
@@ -71,7 +71,7 @@ end
 
 function handleAuthPacket(socket, payload)
     if payload.authenticated then
-        outputDebugString("[Discord] Authentication successful")
+        outputDebugString("[Discord] Doğrulama Başarılı")
 
         socket:write(table.json {
             type = "select-channel",
@@ -81,7 +81,7 @@ function handleAuthPacket(socket, payload)
         })
     else
         local error = tostring(payload.error) or "unknown error"
-        outputDebugString("[Discord] Failed to authenticate: ".. error)
+        outputDebugString("[Discord] Bağlantı başarısız: ".. error)
         socket:disconnect()
     end
 end
@@ -89,16 +89,16 @@ end
 function handleSelectChannelPacket(socket, payload)
     if payload.success then
         if payload.wait then
-            outputDebugString("[Discord] Bot isn't ready")
+            outputDebugString("[Discord] Bot şuan aktif değil")
         else
-            outputDebugString("[Discord] Channel has been bound")
+            outputDebugString("[Discord] Kanal Bulunamadı")
 
             if not socket.bindmessage then
                 socket:write(table.json {
                     type = "chat.message.text",
                     payload = {
                         author = "Server",
-                        text = "Hello :wave:"
+                        text = "Merhaba :wave:"
                     }
                 })
 
@@ -107,13 +107,13 @@ function handleSelectChannelPacket(socket, payload)
         end
     else
         local error = tostring(payload.error) or "unknown error"
-        outputDebugString("[Discord] Failed to bind channel: ".. error)
+        outputDebugString("[Discord] Kanala Bağlantı başarısız: ".. error)
         socket:disconnect()
     end
 end
 
 function handleDisconnectPacket(socket)
-    outputDebugString("[Discord] Server has closed the connection")
+    outputDebugString("[Discord] Server Bağlantısı Kesildi")
     socket:disconnect()
     socket.bindmessage = false
 end

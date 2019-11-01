@@ -1,5 +1,5 @@
 <meta>
-    <info name="Discord" author="Necktrox" version="1.0.0" type="script" description="Connects MTA:SA servers and Discord channels by sending messages/commands back and forth"/>
+    <info name="Discord Bot" author="Baleygr" version="1.1.0" type="script" description="Discord ve Mta ya bağlandığında Mesajla Komut deneyin"/>
     <include resource="discord-events"/>
     <config type="server" src="config.xml"/>
     <script type="server" src="socket.lua"/>

@@ -65,13 +65,13 @@ class Server extends EventEmitter {
                 let payload = json.payload;
 
                 if (json.type != "auth" || payload.salt.length != 32 || payload.passphrase.length != 64) {
-                    return session.send(new DenyAuthPacket("invalid payload")).close();
+                    return session.send(new DenyAuthPacket("Token kabul edilmedi.")).close();
                 }
 
                 let hash = Server.encryptWithSalt(this.passphrase, payload.salt);
 
                 if (hash !== payload.passphrase) {
-                    return session.send(new DenyAuthPacket("invalid authentication payload")).close();
+                    return session.send(new DenyAuthPacket("Token tekrar denenemiyor")).close();
                 }
 
                 session.set("authenticated", true);
@@ -90,17 +90,17 @@ class Server extends EventEmitter {
     }
 
     _listening() {
-        console.log(`Server listening on ${this.port}`);
+        console.log(`Server Kontrol ediyor ${this.port}`);
         this.emit("ready");
     }
 
     _close() {
-        console.log("Server closed");
+        console.log("Server Kapatıldı");
         this.emit("close");
     }
 
     _error(error) {
-        console.log(`Server error: ${error.toString()}\n${error.stack}`);
+        console.log(`Server Hatası: ${error.toString()}\n${error.stack}`);
     }
 
     /**

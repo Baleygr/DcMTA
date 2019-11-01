@@ -1,7 +1,7 @@
 {
   "name": "mta-discord-bot",
-  "version": "1.0.0",
-  "description": "Connects MTA:SA servers and Discord channels by sending messages/commands back and forth",
+  "version": "1.1.0",
+  "description": "bağlantı sağlandıktan sonra Yazılı komutları deneyin",
   "main": "app.js",
   "keywords": [
     "discord",
@@ -10,10 +10,10 @@
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Marek Kulik <marek.kulik@hotmail.com>",
+  "author": "Tugcan USKAN <tugcan.uskan.2@hotmail.com>",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.2.0",
+    "discord.js": "^8.9.7",
     "emojione": "^3.1.2"
   }
 }

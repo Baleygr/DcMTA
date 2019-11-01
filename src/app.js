@@ -15,7 +15,7 @@ let config = require("./config.json");
 /**
  * Public socket endpoint server
  */
-let server = new Server(config.port || 8095, config.passphrase);
+let server = new Server(config.port || 22005, config.passphrase);
 
 /**
  * Generic packet manager
@@ -38,7 +38,7 @@ for (let botconfig of config.bots) {
 
     // Disallow channel duplicates
     if (channelBots.has(channel)) {
-        console.log(`Skipping duplicate bot for channel ${channel}`);
+        console.log(`Bu kanala geçiş yapıldı ${channel}`);
         continue;
     }
 
@@ -47,7 +47,7 @@ for (let botconfig of config.bots) {
     channelBots.set(channel, bot);
 
     bot.on("ready", () => {
-        console.log(`Bot ${bot.name} connected`);
+        console.log(`Bot ${bot.name} Bağlandı`);
         channelBots.set(channel, bot);
 
         // Send confirmation to waiting session
@@ -59,7 +59,7 @@ for (let botconfig of config.bots) {
     });
 
     bot.on("disconnect", () => {
-        console.log(`Bot ${bot.name} disconnected`);
+        console.log(`Bot ${bot.name} Çıktı`);
 
         // Remove this bot
         channelBots.delete(bot.channelName);
@@ -85,7 +85,7 @@ for (let botconfig of config.bots) {
 
     bot.on("session.bind", (session) => {
         if (!session.get("bind-message")) {
-            bot.sendMessage(`**Bot:** Hello :sparkles:`);
+            bot.sendMessage(`**Bot:** Merhaba :sparkles:`);
             session.set("bind-message", true)
         }
     });
@@ -93,7 +93,7 @@ for (let botconfig of config.bots) {
     function login() {
         bot.login()
             .catch((error) => {
-                console.error(`Bot failed to login: ${error.message}`);
+                console.error(`Bot Girişi Hatalı: ${error.message}`);
                 setTimeout(login, 5000);
             });
     }
@@ -121,15 +121,15 @@ server.on("data", (session, type, payload) => {
         if (type == "select-channel") {
             // Verify payload
             if (typeof payload.channel !== "string")
-                return session.send(SelectChannelPacket.error("no channel name in payload")).close();
+                return session.send(SelectChannelPacket.error(ChannelName."Bu adda Kanal Bulunamadı !")).close();
 
             // Check if any bot manages this channel
             if (!channelBots.has(payload.channel))
-                return session.send(SelectChannelPacket.error("channel not available"));
+                return session.send(SelectChannelPacket.error("Bu Kanala Ulaşım Sağlanılamadı."));
 
             // Check if any session already reserved this channel
             if (channelSessions.has(payload.channel))
-                return session.send(SelectChannelPacket.error("channel is reserved")).close();
+                return session.send(SelectChannelPacket.error("Kanal Rezerve")).close();
 
             // Reserve channel for session
             channelSessions.set(payload.channel, session);
@@ -146,7 +146,7 @@ server.on("data", (session, type, payload) => {
             return session.send(SelectChannelPacket.success());
         }
         else
-            return session.send(SelectChannelPacket.error("no channel selected")).close();
+            return session.send(SelectChannelPacket.error("Kanal Seçilmedi"Select.Channel)).close();
     }
     else {
         let channel = session.get("channel");
@@ -158,12 +158,12 @@ server.on("data", (session, type, payload) => {
 server.listen();
 
 process.on("unhandledRejection", (error, promise) => {
-    console.error(`Unhandled promise rejection: ${error.message}`);
+    console.error(`Plugin Enjekte başarısız: ${error.message}`);
     console.error(error.stack);
 });
 
 process.on("uncaughtException", (error) => {
-    console.error(`Uncaught exception: ${error.message}`);
+    console.error(`Açıklaması yok.: ${error.message}`);
     console.error(error.stack);
     process.exit();
 });

@@ -50,7 +50,7 @@ class Bot extends EventEmitter {
 
     sendMessage(message) {
         if (!this.connected || !this.channel) {
-            return Promise.reject(new Error("Bot is offline or not in your guild or didn't find the specified channel"));
+            return Promise.reject(new Error("Bot şuan in-aktif Kanala bağlantı yapılamıyor."));
         }
 
         return this.channel.send(message);
@@ -84,7 +84,7 @@ class Bot extends EventEmitter {
 
         // Leave ignored guilds
         for (let guild of this.client.guilds.filterArray(g => g.id !== this.guildId)) {
-            console.log(`Guild ${guild.name} is not whitelisted for bot ${this.name}`);
+            console.log(`Yetkili ${guild.name} Kullanıcı Whitelist'te değil. ${this.name}`);
             guild.leave();
         }
 
@@ -107,7 +107,7 @@ class Bot extends EventEmitter {
     }
 
     _error(error) {
-        console.log(`Bot ${this.name} error: ${error.toString()}\n${error.stack}`);
+        console.log(`Bot ${this.name} hata: ${error.toString()}\n${error.stack}`);
     }
 
     _disconnect() {
@@ -116,10 +116,10 @@ class Bot extends EventEmitter {
         }
 
         let reconnectFunc = (() => {
-            console.log(`Bot ${this.name} reached reconnect timeout. Forcing reconnect..`);
+            console.log(`Bot ${this.name} girişi Tekrarlanıyor...`);
             this.reconnectTimer = null;
             this.login().catch((error) => {
-                console.log(`Bot ${this.name} failed to reconnect after timeout. Trying again in 5 minutes.`);
+                console.log(`Bot ${this.name} Girişi yapılamadı, 5 dakika sonra tekrar deneyiniz`);
                 this.reconnectTimer = setTimeout(reconnectFunc, 5 * 60000);
             });
         }).bind(this);
@@ -155,7 +155,7 @@ class Bot extends EventEmitter {
     _guildCreate(guild) {
         // Leave ignored guilds
         if (guild.id !== this.guildId) {
-            console.log(`Guild ${guild.name} is not whitelisted for bot ${this.name}`);
+            console.log(`Yetkili ${guild.name} Whitelist'e kayıtlı değil. ${this.name}`);
             guild.leave();
         } else {
             this.guild = guild;

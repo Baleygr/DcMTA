@@ -15,7 +15,7 @@ let config = require("./config.json");
 /**
  * Public socket endpoint server
  */
-let server = new Server(config.port || 22005, config.passphrase);
+let server = new Server(config.port || 22003, config.passphrase);
 
 /**
  * Generic packet manager
